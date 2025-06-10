@@ -1,7 +1,7 @@
-🎬 Cine API - Backend
+# 🎬 Cine API - Backend
 Este repositorio contiene el backend de una API REST desarrollada en Java 17 con Spring Boot, conectada a una base de datos MySQL. El proyecto permite gestionar cines y películas, contemplando una relación muchos-a-muchos entre ambas entidades mediante una tabla intermedia.
 
-🧱 Tecnologías utilizadas
+## 🧱 Tecnologías utilizadas
 - Java 17
 
 - Spring Boot
@@ -12,8 +12,8 @@ Este repositorio contiene el backend de una API REST desarrollada en Java 17 con
 
 - Maven
 
-📚 Entidades del sistema
-🏢 Cine
+## 📚 Entidades del sistema
+### 🏢 Cine
 Representa un cine físico.
 
 Atributos:
@@ -26,7 +26,7 @@ Atributos:
 
 - ciudad: ciudad donde se encuentra el cine
 
-🎬 Película
+### 🎬 Película
 Representa una película proyectada en uno o más cines.
 
 - Atributos:
@@ -39,7 +39,7 @@ Representa una película proyectada en uno o más cines.
 
 - duracionMin: duración en minutos
 
-🔗 PeliculaCine
+### 🔗 PeliculaCine
 Entidad intermedia que representa qué película se proyecta en qué cine.
 
 Atributos:
