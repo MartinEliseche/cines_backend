@@ -91,6 +91,6 @@ public class CineService {
     }
 
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cine No Encontrado");
-}
+    }
 
 }
