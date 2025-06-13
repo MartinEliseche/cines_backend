@@ -74,29 +74,28 @@ public class PeliculaService {
     }
 
     public ResponseEntity<String> updatePelicula(Long id, PeliculaUpdateDTO peliculaUpdateDTO) {
-    Optional<Pelicula> peliculaOptional = getEntityById(id);
+        Optional<Pelicula> peliculaOptional = getEntityById(id);
 
-    if (peliculaOptional.isPresent()) {
-        Pelicula pelicula = peliculaOptional.get();
+        if (peliculaOptional.isPresent()) {
+            Pelicula pelicula = peliculaOptional.get();
 
-        if (peliculaUpdateDTO.getTitulo() != null) {
-            pelicula.setTitulo(peliculaUpdateDTO.getTitulo().toUpperCase());
-        }
-        if (peliculaUpdateDTO.getGenero() != null) {
-            pelicula.setGenero(peliculaUpdateDTO.getGenero().toUpperCase());
-        }
-        if (peliculaUpdateDTO.getDuracionMin() != null) {
-            pelicula.setDuracionMin(peliculaUpdateDTO.getDuracionMin());
-        }
-        if (peliculaUpdateDTO.getAnio() != null) {
-            pelicula.setAnio(peliculaUpdateDTO.getAnio());
+            if (peliculaUpdateDTO.getTitulo() != null) {
+                pelicula.setTitulo(peliculaUpdateDTO.getTitulo().toUpperCase());
+            }
+            if (peliculaUpdateDTO.getGenero() != null) {
+                pelicula.setGenero(peliculaUpdateDTO.getGenero().toUpperCase());
+            }
+            if (peliculaUpdateDTO.getDuracionMin() != null) {
+                pelicula.setDuracionMin(peliculaUpdateDTO.getDuracionMin());
+            }
+            if (peliculaUpdateDTO.getAnio() != null) {
+                pelicula.setAnio(peliculaUpdateDTO.getAnio());
+            }
+
+            peliculaRepository.save(pelicula);
+            return ResponseEntity.status(HttpStatus.OK).body("Pelicula Actualizada");
         }
 
-        peliculaRepository.save(pelicula);
-        return ResponseEntity.status(HttpStatus.OK).body("Pelicula Actualizada");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pelicula No Encontrada");
     }
-
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pelicula No Encontrada");
-    }
-
 }
