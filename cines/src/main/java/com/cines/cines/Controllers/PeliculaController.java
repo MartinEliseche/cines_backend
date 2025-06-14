@@ -5,6 +5,8 @@ import com.cines.cines.DTOs.Response.PeliculaResponseDTO;
 import com.cines.cines.DTOs.Update.PeliculaUpdateDTO;
 
 import com.cines.cines.Services.PeliculaService;
+
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
@@ -30,7 +32,7 @@ public class PeliculaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createPelicula(@RequestBody PeliculaRequestDTO peliculaRequestDTO) {
+    public ResponseEntity<?> createPelicula(@Valid @RequestBody PeliculaRequestDTO peliculaRequestDTO) {
         return peliculaService.createPelicula(peliculaRequestDTO);
     }
 
