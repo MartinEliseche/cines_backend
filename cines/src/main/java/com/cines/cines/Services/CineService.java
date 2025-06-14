@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.List;
 import java.util.Optional;
@@ -64,33 +65,41 @@ public class CineService {
         Optional<Cine> cineOptional = getEntityById(id);
 
         if (cineOptional.isPresent()) {
-            cineRepository.delete(cineOptional.get());
-            return ResponseEntity.status(HttpStatus.OK).body("Cine Eliminado");
+            try {
+                cineRepository.delete(cineOptional.get());
+                return ResponseEntity.status(HttpStatus.OK).body("Cine Eliminado");
+            } catch (DataIntegrityViolationException e) {
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("No se puede eliminar el cine porque tiene relaciones asociadas.");
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Error interno al eliminar el cine.");
+            }
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cine No Encontrado");
     }
 
     public ResponseEntity<String> updateCine(Long id, CineUpdateDTO cineUpdateDTO) {
-    Optional<Cine> cineOptional = getEntityById(id);
+        Optional<Cine> cineOptional = getEntityById(id);
 
-    if (cineOptional.isPresent()) {
-        Cine cine = cineOptional.get();
+        if (cineOptional.isPresent()) {
+            Cine cine = cineOptional.get();
 
-        if (cineUpdateDTO.getNombre() != null) {
-            cine.setNombre(cineUpdateDTO.getNombre().toUpperCase());
+            if (cineUpdateDTO.getNombre() != null) {
+                cine.setNombre(cineUpdateDTO.getNombre().toUpperCase());
+            }
+            if (cineUpdateDTO.getDireccion() != null) {
+                cine.setDireccion(cineUpdateDTO.getDireccion().toUpperCase());
+            }
+            if (cineUpdateDTO.getCiudad() != null) {
+                cine.setCiudad(cineUpdateDTO.getCiudad().toUpperCase());
+            }
+
+            cineRepository.save(cine);
+            return ResponseEntity.status(HttpStatus.OK).body("Cine Actualizado");
         }
-        if (cineUpdateDTO.getDireccion() != null) {
-            cine.setDireccion(cineUpdateDTO.getDireccion().toUpperCase());
-        }
-        if (cineUpdateDTO.getCiudad() != null) {
-            cine.setCiudad(cineUpdateDTO.getCiudad().toUpperCase());
-        }
 
-        cineRepository.save(cine);
-        return ResponseEntity.status(HttpStatus.OK).body("Cine Actualizado");
-    }
-
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cine No Encontrado");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cine No Encontrado");
     }
 
 }
