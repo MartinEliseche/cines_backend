@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql-cines
+    restart: always
+    environment:
+      MYSQL_DATABASE: cinesdb
+      MYSQL_ROOT_PASSWORD: root  
+    ports:
+      - "3307:3306" 
+    volumes:
+      - db_data:/var/lib/mysql  
+
+  backend:
+    image: tinchoeliseche/cines_backend:latest
+    container_name: backend-cines
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env  
+    restart: always
+
+volumes:
+  db_data:
