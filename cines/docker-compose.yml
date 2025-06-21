@@ -3,25 +3,38 @@ version: '3.8'
 services:
   db:
     image: mysql:8.0
-    container_name: mysql-cines
-    restart: always
+    container_name: db-cines
     environment:
+      MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: cinesdb
-      MYSQL_ROOT_PASSWORD: root  
     ports:
-      - "3307:3306" 
+      - "3307:3306"
     volumes:
-      - db_data:/var/lib/mysql  
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "--password=root"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
 
   backend:
-    image: tinchoeliseche/cines_backend:latest
+    image: tinchoeliseche/cines_backend:1.3V
     container_name: backend-cines
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "8080:8080"
     env_file:
-      - .env  
+      - .env
+
+  frontend:
+    image: tinchoeliseche/cines_frontend:1.1V
+    container_name: frontend-cines
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
     restart: always
 
 volumes:

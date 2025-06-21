@@ -1,11 +1,12 @@
 #!/bin/sh
 
-echo "Esperando a que MySQL esté disponible en $DB_HOST:$DB_PORT..."
+echo "Esperando que MySQL esté disponible..."
 
-while ! nc -z "$DB_HOST" "$DB_PORT"; do
-  sleep 1
+until nc -z -v -w30 $DB_HOST $DB_PORT
+do
+  echo "Esperando conexión a MySQL en $DB_HOST:$DB_PORT..."
+  sleep 2
 done
 
-echo "MySQL disponible. Iniciando la app."
-
+echo "MySQL está listo, arrancando la app"
 exec java -jar app.jar
