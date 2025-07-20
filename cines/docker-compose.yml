@@ -18,7 +18,7 @@ services:
       retries: 10
 
   backend:
-    image: tinchoeliseche/cines_backend:1.3V
+    image: tinchoeliseche/cines_backend:1.5V
     container_name: backend-cines
     depends_on:
       db:
@@ -29,7 +29,7 @@ services:
       - .env
 
   frontend:
-    image: tinchoeliseche/cines_frontend:1.1V
+    image: tinchoeliseche/cines_frontend:1.4V
     container_name: frontend-cines
     depends_on:
       - backend
